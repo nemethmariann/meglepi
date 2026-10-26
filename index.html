@@ -152,12 +152,20 @@
       <p class="lead center">Ez a jegy személyre szóló és nem átruházható. További részletek emailben!</p>
     </section>
 
-    <!-- 4/B. RAWR ANIMÁCIÓ (nem ér rá okt. 28-án) -->
-    <section class="page" id="page-rawr">
-      <div class="rawr-stage" id="rawrStage">
+    <!-- 4/B. DÍNÓ ANIMÁCIÓ (nem ér rá okt. 28-án) -->
+    <section class="page" id="page-dino">
+      <div class="dino-stage" id="dinoStage">
         <div class="dino">
-          <div class="rawr-bubble">RAWR!</div>
+          <!-- fénysugarak a gyűrű mögött -->
+          <div class="ring-rays" aria-hidden="true"></div>
           <svg class="dino-svg" viewBox="0 0 300 260" aria-hidden="true">
+            <!-- szárnyak (csak repüléskor jelennek meg) -->
+            <g class="wing wing-back">
+              <path d="M140 108 C125 50 75 35 75 75 C78 100 110 112 140 110 Z"/>
+            </g>
+            <g class="wing wing-front">
+              <path d="M125 112 C95 60 40 55 50 95 C60 120 100 125 125 116 Z"/>
+            </g>
             <!-- farok -->
             <path class="dino-dark" d="M75 175 Q25 172 8 125 Q45 152 90 148 Z"/>
             <!-- tüskék -->
@@ -185,13 +193,7 @@
                 <circle class="eye-shine" cx="197" cy="88" r="3.5"/>
                 <circle class="eye-shine" cx="237" cy="85" r="3.5"/>
               </g>
-              <path class="mouth-closed" d="M204 116 Q215 126 226 115"/>
-              <g class="mouth-open">
-                <path d="M198 110 Q214 146 232 108 Z" fill="#7e1449"/>
-                <ellipse cx="215" cy="127" rx="8" ry="5" fill="#ff6fae"/>
-                <polygon points="203,111 207,111 205,117" fill="#fff"/>
-                <polygon points="223,110 227,110 225,116" fill="#fff"/>
-              </g>
+              <path class="mouth" d="M204 116 Q215 126 226 115"/>
               <!-- masni -->
               <g class="bow">
                 <polygon points="185,48 160,34 162,62"/>
@@ -200,7 +202,6 @@
               </g>
             </g>
           </svg>
-          <div class="rawr-hearts" id="rawrHearts"></div>
           <!-- a jegygyűrű, amit a dínó megtalál -->
           <button class="ring" id="ring" type="button" aria-label="Jegygyűrű" tabindex="-1">
             <svg viewBox="0 0 100 100" aria-hidden="true">
@@ -215,13 +216,12 @@
             <span class="ring-sparkle s2">✦</span>
             <span class="ring-sparkle s3">✦</span>
           </button>
-          <div class="rawr-hearts ring-hearts" id="ringHearts"></div>
+          <div class="burst" id="ringBurst"></div>
         </div>
-        <p class="rawr-sub">(dínóul ez azt jelenti: gratulálok!) (ÁT KELL ÍRNI)</p>
-        <p class="rawr-prompt">Ezt neked találtam! Kattints rá! (ÁT KELL ÍRNI)</p>
+        <p class="dino-prompt">Ezt neked találtam! Kattints rá! (ÁT KELL ÍRNI)</p>
       </div>
       <div class="actions center">
-        <button class="btn btn-ghost test-only" id="rawrSkip">Animáció átugrása (teszt)</button>
+        <button class="btn btn-ghost test-only" id="dinoSkip">Animáció átugrása (teszt)</button>
       </div>
     </section>
 

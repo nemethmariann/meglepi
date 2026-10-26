@@ -68,7 +68,7 @@ document.getElementById("testReset").addEventListener("click", () => {
 // ---------- Navigáció ----------
 // Nincs böngésző-előzmény: a vissza gomb nem visz vissza egy korábbi lépésre,
 // újratöltésnél pedig ott folytatódik, ahol abbahagyta.
-const PAGES = ["page-welcome", "page-form", "page-terms", "page-ticket", "page-rawr", "page-big"];
+const PAGES = ["page-welcome", "page-form", "page-terms", "page-ticket", "page-dino", "page-big"];
 
 function show(id) {
   document.querySelectorAll(".page").forEach((p) => p.classList.toggle("active", p.id === id));
@@ -77,7 +77,7 @@ function show(id) {
   store.save(state);
   document.body.classList.toggle("night", id === "page-big");
   if (id === "page-ticket" || id === "page-big") renderTickets();
-  if (id === "page-rawr") startRawr();
+  if (id === "page-dino") startDino();
   if (id === "page-big") startBigReveal();
 }
 
@@ -254,67 +254,85 @@ acceptBtn.addEventListener("click", () => {
     show("page-ticket");
     confetti();
   } else {
-    show("page-rawr");
+    show("page-dino");
   }
 });
 
-// ---------- Rawr animáció ----------
-// besétál a dínó -> RAWR! + szívecskék -> mosolyog -> talál egy jegygyűrűt
-// -> feléd nyújtja -> rákattintasz -> elugrik -> tűzijáték
-const rawrStage = document.getElementById("rawrStage");
-const rawrHearts = document.getElementById("rawrHearts");
+// ---------- Dínó animáció ----------
+// besétál a dínó -> megtalálja a jegygyűrűt -> féltérdre ereszkedik és feléd nyújtja
+// -> rákattintasz -> szárnyai nőnek és elrepül -> tűzijáték
+const dinoStage = document.getElementById("dinoStage");
 const ring = document.getElementById("ring");
-const ringHearts = document.getElementById("ringHearts");
-let rawrTimers = [];
+const ringBurst = document.getElementById("ringBurst");
+let dinoTimers = [];
+let ringReady = false;
 
-const rawrAt = (ms, fn) => rawrTimers.push(setTimeout(fn, ms));
-const setStage = (classes) => (rawrStage.className = "rawr-stage " + classes);
+const dinoAt = (ms, fn) => dinoTimers.push(setTimeout(fn, ms));
+const setStage = (classes) => (dinoStage.className = "dino-stage " + classes);
 
-function startRawr() {
-  rawrTimers.forEach(clearTimeout);
-  rawrTimers = [];
+function startDino() {
+  dinoTimers.forEach(clearTimeout);
+  dinoTimers = [];
+  ringReady = false;
   ring.tabIndex = -1;
   setStage("walk");
-  rawrAt(2200, () => {
-    setStage("roar");
-    for (let i = 0; i < 4; i++) rawrAt(i * 350, () => heartBurst(rawrHearts));
-  });
-  rawrAt(4200, () => setStage("calm"));
-  rawrAt(6000, () => setStage("calm find"));
-  rawrAt(8000, () => {
-    setStage("calm find give");
+  dinoAt(2000, () => setStage("find"));
+  dinoAt(3300, () => setStage("find kneel"));
+  // amikor a gyűrű odaért a kezéhez: szikraeső
+  dinoAt(4900, () => {
+    burst(ringBurst, "✦", ["#f6dd9c", "#d9a441", "#fff"], 20);
+    ringReady = true;
     ring.tabIndex = 0;
   });
 }
 
 ring.addEventListener("click", () => {
-  if (!rawrStage.classList.contains("give")) return;
+  if (!ringReady) return;
+  ringReady = false;
   ring.tabIndex = -1;
-  heartBurst(ringHearts);
-  rawrAt(150, () => heartBurst(ringHearts));
-  setStage("calm find give yes");
-  rawrAt(700, () => setStage("calm find give yes bye"));
-  rawrAt(1800, () => show("page-big"));
+  burst(ringBurst, "♥", ["#f0569a", "#ff9fc4", "#b3266a"], 16);
+  dinoAt(200, () => burst(ringBurst, "✦", ["#f6dd9c", "#fff"], 14));
+  setStage("find kneel yes");
+  dinoAt(600, () => setStage("find yes fly"));
+  dinoAt(1100, () => dinoTimers.push(setInterval(trailHeart, 90)));
+  dinoAt(3300, () => {
+    dinoTimers.forEach(clearTimeout);
+    show("page-big");
+  });
 });
 
-function heartBurst(container) {
-  for (let i = 0; i < 12; i++) {
+// szívecskék/szikrák minden irányba
+function burst(container, char, colors, count) {
+  for (let i = 0; i < count; i++) {
     const h = document.createElement("span");
-    h.textContent = "♥";
-    // főleg jobbra-felfelé repülnek, a dínó szája felől
-    const angle = -Math.PI * (0.05 + Math.random() * 0.6);
-    const dist = 120 + Math.random() * 220;
+    h.textContent = char;
+    const angle = Math.random() * Math.PI * 2;
+    const dist = 90 + Math.random() * 180;
     h.style.setProperty("--dx", Math.cos(angle) * dist + "px");
     h.style.setProperty("--dy", Math.sin(angle) * dist + "px");
-    h.style.setProperty("--r", Math.random() * 80 - 40 + "deg");
-    h.style.setProperty("--s", 16 + Math.random() * 22 + "px");
+    h.style.setProperty("--r", Math.random() * 120 - 60 + "deg");
+    h.style.setProperty("--s", 14 + Math.random() * 22 + "px");
+    h.style.setProperty("--c", colors[i % colors.length]);
     container.appendChild(h);
     h.addEventListener("animationend", () => h.remove());
   }
 }
 
-document.getElementById("rawrSkip").addEventListener("click", () => {
-  rawrTimers.forEach(clearTimeout);
+// repülés közben szívecske-csíkot húz maga után
+function trailHeart() {
+  const r = dinoStage.querySelector(".dino").getBoundingClientRect();
+  const h = document.createElement("span");
+  h.className = "trail-heart";
+  h.textContent = "♥";
+  h.style.left = r.left + r.width * (0.3 + Math.random() * 0.2) + "px";
+  h.style.top = r.top + r.height * 0.75 + "px";
+  h.style.fontSize = 12 + Math.random() * 14 + "px";
+  document.body.appendChild(h);
+  h.addEventListener("animationend", () => h.remove());
+}
+
+document.getElementById("dinoSkip").addEventListener("click", () => {
+  dinoTimers.forEach(clearTimeout);
   show("page-big");
 });
 
@@ -482,7 +500,7 @@ let initial = PAGES.includes(state.page) ? state.page : "page-welcome";
 if (state.locked) {
   // elfogadás után már csak előre lehet menni
   if (state.answers?.available === "igen") initial = "page-ticket";
-  else if (initial !== "page-big") initial = "page-rawr";
+  else if (initial !== "page-big") initial = "page-dino";
 } else if (!state.answers && initial !== "page-welcome") {
   initial = "page-form";
 } else if (!["page-welcome", "page-form", "page-terms"].includes(initial)) {
