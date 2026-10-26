@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MEGLEPI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="sparkles" aria-hidden="true"></div>
+  <canvas id="fireworks" aria-hidden="true"></canvas>
+
+  <main>
+    <!-- 1. KEZDŐOLDAL -->
+    <section class="page" id="page-welcome">
+      <div class="polaroids">
+        <figure class="polaroid p1"><img src="images/foto1.jpeg" alt=""><figcaption>🥂</figcaption></figure>
+        <figure class="polaroid p2"><img src="images/foto2.jpg" alt=""><figcaption>🌸</figcaption></figure>
+        <figure class="polaroid p3"><img src="images/foto3.webp" alt=""><figcaption>💍</figcaption></figure>
+        <figure class="polaroid p4"><img src="images/foto4.webp" alt=""><figcaption>🍸</figcaption></figure>
+      </div>
+
+      <div class="card welcome-card">
+        <p class="kicker">Meglepi Meghívó</p>
+        <h1>Szia, Drága! 💍</h1>
+        <p class="lead">Mielőtt bármit elárulnánk, lécci lécci töltsd ki ezt a kis kérdőívet!</p>
+        <button class="btn" data-go="page-form">Let's go!</button>
+      </div>
+    </section>
+
+    <!-- 2. KÉRDŐÍV -->
+    <section class="page" id="page-form">
+      <form class="card" id="form" novalidate>
+        <h2>Adataid💖</h2>
+
+        <label class="field">
+          <span>Kedves Neved?</span>
+          <input type="text" name="name" required autocomplete="name" placeholder="Teljes név">
+        </label>
+
+        <label class="field">
+          <span>Mi az email címed?</span>
+          <input type="email" name="email" required autocomplete="email" placeholder="Lécci lécci azt az emailt add meg, amire a meghívót kaptad!">
+        </label>
+
+        <label class="field">
+          <span>Mi a számlázási címed?</span>
+          <textarea name="address" rows="2" required autocomplete="street-address" placeholder="Irányítószám, város, utca, házszám"></textarea>
+        </label>
+
+        <div class="field">
+          <span>Egy 1–10-es skálán milyen gyorsan válaszolsz az emailjeidre?</span>
+          <div class="range-wrap">
+            <input type="range" name="emailScore" min="1" max="10" value="1" id="emailScore">
+            <output id="emailScoreOut">1</output>
+          </div>
+          <small class="hint" id="emailScoreHint"></small>
+        </div>
+
+        <div class="field">
+          <span id="funny-q">Szeretnél Jegyes lenni?💖</span>
+          <div class="yesno" role="group" aria-labelledby="funny-q">
+            <button type="button" class="pill" id="funnyYes">Igen</button>
+            <button type="button" class="pill pill-ghost" id="funnyNo">Nem</button>
+          </div>
+          <small class="hint" id="funnyHint"></small>
+        </div>
+
+        <div class="field">
+          <span id="date-q">Ráérsz 2026. október 28-án?</span>
+          <div class="yesno" role="group" aria-labelledby="date-q">
+            <button type="button" class="pill" data-date="igen">Igen</button>
+            <button type="button" class="pill" data-date="nem">Nem</button>
+          </div>
+        </div>
+
+        <p class="error" id="formError" hidden></p>
+        <div class="actions">
+          <button type="button" class="btn btn-ghost test-only" data-go="page-welcome">Vissza (teszt)</button>
+          <button type="submit" class="btn">Tovább</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- 3. FELTÉTELEK -->
+    <section class="page" id="page-terms">
+      <div class="card">
+        <p class="kicker">Feltételek</p>
+        <h2>Apró betűs rész 😉</h2>
+
+        <h3>Adatkezelési feltételek</h3>
+        <div class="scrollbox">
+          <ol>
+            <li>Pinky promise, ezeket az adatokat nem mentjük el sehova.</li>
+            <li>De tényleg sehova!!!</li>
+            <li>Szóval inkább jegyezd meg a számlázási címedet meg ilyeneket:D</li>
+            <li>Az email címedet meg eddig is tudtuk:D</li>
+            <li>Gólyácskák adataira azért jobban kell vigyázni!!!</li>
+            <li>Az eseményen készült fotókat esetlegesen Facebookon viszont fogod látni:D</li>
+
+          </ol>
+        </div>
+
+        <h3>Munkaköri leírás</h3>
+        <div class="scrollbox">
+          <ul>
+            <li>Szprecsik legnagyobb rendben tartása</li>
+            <li>Gólyácskák emailjeire kedvesen és türelmesen válaszolni (akkor is ha bolondok)</li>
+            <li>Gólyácskák jegyeit a lehető leggyorsabban kiküldeni</li>
+            <li>Számlázós szprecsik elkészítése</li>
+            <li>Kötelező ragekör jegyes chatekben</li>
+          </ul>
+        </div>
+
+        <label class="check"><input type="checkbox" id="acceptPrivacy"> Elolvastam és elfogadom az adatkezelési feltételeket</label>
+        <label class="check"><input type="checkbox" id="acceptJob"> Elfogadom a munkaköri leírást</label>
+
+        <div class="actions">
+          <button type="button" class="btn btn-ghost test-only" data-go="page-form">Vissza (teszt)</button>
+          <button type="button" class="btn" id="acceptBtn" disabled>Elfogadom</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4/A. JEGY HELYSZÍNNEL (ráér okt. 28-án) -->
+    <section class="page" id="page-ticket">
+      <p class="kicker center">Officiális Meglepi Meghívó</p>
+      <div class="ticket">
+        <div class="ticket-main">
+          <p class="ticket-label">Legjegyesebb jegy evör</p>
+          <div class="ticket-person">
+            <div class="ticket-photo" data-photo></div>
+            <div>
+              <p class="ticket-name" data-name></p>
+              <p class="ticket-role">💖</p>
+            </div>
+          </div>
+          <dl class="ticket-meta">
+            <div><dt>Dátum</dt><dd data-ticket-date></dd></div>
+            <div><dt>Helyszín</dt><dd data-location></dd></div>
+          </dl>
+        </div>
+        <div class="ticket-stub">
+          <div class="barcode" data-barcode aria-hidden="true"></div>
+          <p class="serial" data-serial></p>
+          <p class="admit">ADMIT ONE</p>
+        </div>
+      </div>
+      <p class="lead center">Ez a jegy személyre szóló és nem átruházható. További részletek emailben!</p>
+    </section>
+
+    <!-- 4/B. VIDEÓ (nem ér rá okt. 28-án) -->
+    <section class="page" id="page-video">
+      <div class="video-wrap">
+        <video id="video" src="videos/video.mp4" playsinline preload="auto"></video>
+        <button class="btn video-play" id="videoPlay" hidden>Lejátszás</button>
+      </div>
+      <div class="actions center">
+        <button class="btn btn-ghost test-only" id="videoSkip">Videó átugrása (teszt)</button>
+      </div>
+    </section>
+
+    <!-- 5/B. NAGY JEGY TŰZIJÁTÉKKAL -->
+    <section class="page" id="page-big">
+      <div class="ticket big" id="bigTicket">
+        <div class="ticket-main">
+          <p class="ticket-label">Üdvöz légy, Dementor🦇</p>
+          <p class="big-title">Leszel jegyes?</p>
+          <div class="ticket-photo big-photo" data-photo></div>
+          <p class="ticket-name" data-name></p>
+          <p class="big-note">Nemre 6.7 órád van, igenre 420</p>
+        </div>
+        <div class="ticket-stub">
+          <div class="barcode" data-barcode aria-hidden="true"></div>
+          <p class="serial" data-serial></p>
+          <p class="admit">ADMIT ONE</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- csak tesztelésnél látszik -->
+  <button class="test-reset test-only" id="testReset">Újrakezdés (teszt)</button>
+
+  <canvas id="confetti" aria-hidden="true"></canvas>
+  <script src="app.js"></script>
+</body>
+</html>
