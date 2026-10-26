@@ -68,15 +68,16 @@ document.getElementById("testReset").addEventListener("click", () => {
 // ---------- Navigáció ----------
 // Nincs böngésző-előzmény: a vissza gomb nem visz vissza egy korábbi lépésre,
 // újratöltésnél pedig ott folytatódik, ahol abbahagyta.
-const PAGES = ["page-welcome", "page-form", "page-terms", "page-ticket", "page-video", "page-big"];
+const PAGES = ["page-welcome", "page-form", "page-terms", "page-ticket", "page-rawr", "page-big"];
 
 function show(id) {
   document.querySelectorAll(".page").forEach((p) => p.classList.toggle("active", p.id === id));
   window.scrollTo({ top: 0 });
   state.page = id;
   store.save(state);
-  document.body.classList.toggle("night", id === "page-video" || id === "page-big");
+  document.body.classList.toggle("night", id === "page-big");
   if (id === "page-ticket" || id === "page-big") renderTickets();
+  if (id === "page-rawr") startRawr();
   if (id === "page-big") startBigReveal();
 }
 
@@ -253,28 +254,47 @@ acceptBtn.addEventListener("click", () => {
     show("page-ticket");
     confetti();
   } else {
-    show("page-video");
-    playVideo(); // még a kattintáson belül, hogy hanggal is elinduljon
+    show("page-rawr");
   }
 });
 
-// ---------- Videó ----------
-const video = document.getElementById("video");
-const videoPlay = document.getElementById("videoPlay");
+// ---------- Rawr animáció ----------
+// besétál a dínó -> RAWR! + szívecskék -> mosolyog -> elugrik -> tűzijáték
+const rawrStage = document.getElementById("rawrStage");
+const rawrHearts = document.getElementById("rawrHearts");
+let rawrTimers = [];
 
-function playVideo() {
-  videoPlay.hidden = true;
-  const p = video.play();
-  if (p) p.catch(() => (videoPlay.hidden = false)); // ha a böngésző nem engedi az automatikus indítást
+function startRawr() {
+  rawrTimers.forEach(clearTimeout);
+  rawrStage.className = "rawr-stage walk";
+  const at = (ms, fn) => rawrTimers.push(setTimeout(fn, ms));
+  at(2200, () => {
+    rawrStage.className = "rawr-stage roar";
+    for (let i = 0; i < 4; i++) at(i * 350, heartBurst);
+  });
+  at(4200, () => (rawrStage.className = "rawr-stage calm"));
+  at(6800, () => (rawrStage.className = "rawr-stage calm bye"));
+  at(7900, () => show("page-big"));
 }
-videoPlay.addEventListener("click", playVideo);
-video.addEventListener("ended", () => show("page-big"));
-// ha nincs még videó, egyből jön a tűzijáték
-video.addEventListener("error", () => {
-  if (state.page === "page-video") show("page-big");
-});
-document.getElementById("videoSkip").addEventListener("click", () => {
-  video.pause();
+
+function heartBurst() {
+  for (let i = 0; i < 12; i++) {
+    const h = document.createElement("span");
+    h.textContent = "♥";
+    // főleg jobbra-felfelé repülnek, a dínó szája felől
+    const angle = -Math.PI * (0.05 + Math.random() * 0.6);
+    const dist = 120 + Math.random() * 220;
+    h.style.setProperty("--dx", Math.cos(angle) * dist + "px");
+    h.style.setProperty("--dy", Math.sin(angle) * dist + "px");
+    h.style.setProperty("--r", Math.random() * 80 - 40 + "deg");
+    h.style.setProperty("--s", 16 + Math.random() * 22 + "px");
+    rawrHearts.appendChild(h);
+    h.addEventListener("animationend", () => h.remove());
+  }
+}
+
+document.getElementById("rawrSkip").addEventListener("click", () => {
+  rawrTimers.forEach(clearTimeout);
   show("page-big");
 });
 
@@ -442,11 +462,10 @@ let initial = PAGES.includes(state.page) ? state.page : "page-welcome";
 if (state.locked) {
   // elfogadás után már csak előre lehet menni
   if (state.answers?.available === "igen") initial = "page-ticket";
-  else if (initial !== "page-big") initial = "page-video";
+  else if (initial !== "page-big") initial = "page-rawr";
 } else if (!state.answers && initial !== "page-welcome") {
   initial = "page-form";
 } else if (!["page-welcome", "page-form", "page-terms"].includes(initial)) {
   initial = "page-welcome";
 }
 show(initial);
-if (initial === "page-video") videoPlay.hidden = false; // újratöltés után kattintás kell a lejátszáshoz

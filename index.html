@@ -152,14 +152,60 @@
       <p class="lead center">Ez a jegy személyre szóló és nem átruházható. További részletek emailben!</p>
     </section>
 
-    <!-- 4/B. VIDEÓ (nem ér rá okt. 28-án) -->
-    <section class="page" id="page-video">
-      <div class="video-wrap">
-        <video id="video" src="videos/video.mp4" playsinline preload="auto"></video>
-        <button class="btn video-play" id="videoPlay" hidden>Lejátszás</button>
+    <!-- 4/B. RAWR ANIMÁCIÓ (nem ér rá okt. 28-án) -->
+    <section class="page" id="page-rawr">
+      <div class="rawr-stage" id="rawrStage">
+        <div class="dino">
+          <div class="rawr-bubble">RAWR!</div>
+          <svg class="dino-svg" viewBox="0 0 300 260" aria-hidden="true">
+            <!-- farok -->
+            <path class="dino-dark" d="M75 175 Q25 172 8 125 Q45 152 90 148 Z"/>
+            <!-- tüskék -->
+            <polygon class="dino-spike" points="152,70 172,52 140,42"/>
+            <polygon class="dino-spike" points="126,113 150,108 132,86"/>
+            <polygon class="dino-spike" points="94,120 116,113 96,93"/>
+            <polygon class="dino-spike" points="64,138 86,125 60,110"/>
+            <!-- lábak -->
+            <g class="leg leg-back"><rect class="dino-dark" x="92" y="196" width="30" height="44" rx="14"/></g>
+            <g class="leg leg-front"><rect class="dino-dark" x="150" y="196" width="30" height="44" rx="14"/></g>
+            <!-- test -->
+            <ellipse class="dino-body" cx="130" cy="165" rx="72" ry="56"/>
+            <ellipse class="dino-belly" cx="152" cy="180" rx="40" ry="34"/>
+            <ellipse class="dino-body" cx="172" cy="132" rx="34" ry="36"/>
+            <!-- kar -->
+            <ellipse class="dino-dark arm" cx="188" cy="162" rx="9" ry="15" transform="rotate(-30 188 162)"/>
+            <!-- fej -->
+            <g class="dino-head">
+              <circle class="dino-body" cx="205" cy="100" r="56"/>
+              <ellipse class="blush" cx="185" cy="118" rx="11" ry="7"/>
+              <ellipse class="blush" cx="246" cy="114" rx="10" ry="7"/>
+              <g class="eyes">
+                <circle class="eye" cx="194" cy="92" r="10"/>
+                <circle class="eye" cx="234" cy="89" r="10"/>
+                <circle class="eye-shine" cx="197" cy="88" r="3.5"/>
+                <circle class="eye-shine" cx="237" cy="85" r="3.5"/>
+              </g>
+              <path class="mouth-closed" d="M204 116 Q215 126 226 115"/>
+              <g class="mouth-open">
+                <path d="M198 110 Q214 146 232 108 Z" fill="#7e1449"/>
+                <ellipse cx="215" cy="127" rx="8" ry="5" fill="#ff6fae"/>
+                <polygon points="203,111 207,111 205,117" fill="#fff"/>
+                <polygon points="223,110 227,110 225,116" fill="#fff"/>
+              </g>
+              <!-- masni -->
+              <g class="bow">
+                <polygon points="185,48 160,34 162,62"/>
+                <polygon points="185,48 208,32 210,60"/>
+                <circle cx="185" cy="48" r="7"/>
+              </g>
+            </g>
+          </svg>
+          <div class="rawr-hearts" id="rawrHearts"></div>
+        </div>
+        <p class="rawr-sub">(dínóul ez azt jelenti: gratulálok!) (ÁT KELL ÍRNI)</p>
       </div>
       <div class="actions center">
-        <button class="btn btn-ghost test-only" id="videoSkip">Videó átugrása (teszt)</button>
+        <button class="btn btn-ghost test-only" id="rawrSkip">Animáció átugrása (teszt)</button>
       </div>
     </section>
 
