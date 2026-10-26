@@ -201,8 +201,24 @@
             </g>
           </svg>
           <div class="rawr-hearts" id="rawrHearts"></div>
+          <!-- a jegygyűrű, amit a dínó megtalál -->
+          <button class="ring" id="ring" type="button" aria-label="Jegygyűrű" tabindex="-1">
+            <svg viewBox="0 0 100 100" aria-hidden="true">
+              <ellipse cx="50" cy="66" rx="30" ry="26" fill="none" stroke="#d9a441" stroke-width="9"/>
+              <ellipse cx="50" cy="66" rx="30" ry="26" fill="none" stroke="#f6dd9c" stroke-width="3"/>
+              <polygon points="50,46 36,30 42,20 58,20 64,30" fill="#fff"/>
+              <polygon points="50,46 36,30 64,30" fill="#ffd9e8"/>
+              <polygon points="42,20 50,30 58,20" fill="#ffc8de"/>
+              <polygon points="44,44 50,40 56,44 50,50" fill="#d9a441"/>
+            </svg>
+            <span class="ring-sparkle s1">✦</span>
+            <span class="ring-sparkle s2">✦</span>
+            <span class="ring-sparkle s3">✦</span>
+          </button>
+          <div class="rawr-hearts ring-hearts" id="ringHearts"></div>
         </div>
         <p class="rawr-sub">(dínóul ez azt jelenti: gratulálok!) (ÁT KELL ÍRNI)</p>
+        <p class="rawr-prompt">Ezt neked találtam! Kattints rá! (ÁT KELL ÍRNI)</p>
       </div>
       <div class="actions center">
         <button class="btn btn-ghost test-only" id="rawrSkip">Animáció átugrása (teszt)</button>

@@ -259,25 +259,45 @@ acceptBtn.addEventListener("click", () => {
 });
 
 // ---------- Rawr animáció ----------
-// besétál a dínó -> RAWR! + szívecskék -> mosolyog -> elugrik -> tűzijáték
+// besétál a dínó -> RAWR! + szívecskék -> mosolyog -> talál egy jegygyűrűt
+// -> feléd nyújtja -> rákattintasz -> elugrik -> tűzijáték
 const rawrStage = document.getElementById("rawrStage");
 const rawrHearts = document.getElementById("rawrHearts");
+const ring = document.getElementById("ring");
+const ringHearts = document.getElementById("ringHearts");
 let rawrTimers = [];
+
+const rawrAt = (ms, fn) => rawrTimers.push(setTimeout(fn, ms));
+const setStage = (classes) => (rawrStage.className = "rawr-stage " + classes);
 
 function startRawr() {
   rawrTimers.forEach(clearTimeout);
-  rawrStage.className = "rawr-stage walk";
-  const at = (ms, fn) => rawrTimers.push(setTimeout(fn, ms));
-  at(2200, () => {
-    rawrStage.className = "rawr-stage roar";
-    for (let i = 0; i < 4; i++) at(i * 350, heartBurst);
+  rawrTimers = [];
+  ring.tabIndex = -1;
+  setStage("walk");
+  rawrAt(2200, () => {
+    setStage("roar");
+    for (let i = 0; i < 4; i++) rawrAt(i * 350, () => heartBurst(rawrHearts));
   });
-  at(4200, () => (rawrStage.className = "rawr-stage calm"));
-  at(6800, () => (rawrStage.className = "rawr-stage calm bye"));
-  at(7900, () => show("page-big"));
+  rawrAt(4200, () => setStage("calm"));
+  rawrAt(6000, () => setStage("calm find"));
+  rawrAt(8000, () => {
+    setStage("calm find give");
+    ring.tabIndex = 0;
+  });
 }
 
-function heartBurst() {
+ring.addEventListener("click", () => {
+  if (!rawrStage.classList.contains("give")) return;
+  ring.tabIndex = -1;
+  heartBurst(ringHearts);
+  rawrAt(150, () => heartBurst(ringHearts));
+  setStage("calm find give yes");
+  rawrAt(700, () => setStage("calm find give yes bye"));
+  rawrAt(1800, () => show("page-big"));
+});
+
+function heartBurst(container) {
   for (let i = 0; i < 12; i++) {
     const h = document.createElement("span");
     h.textContent = "♥";
@@ -288,7 +308,7 @@ function heartBurst() {
     h.style.setProperty("--dy", Math.sin(angle) * dist + "px");
     h.style.setProperty("--r", Math.random() * 80 - 40 + "deg");
     h.style.setProperty("--s", 16 + Math.random() * 22 + "px");
-    rawrHearts.appendChild(h);
+    container.appendChild(h);
     h.addEventListener("animationend", () => h.remove());
   }
 }
