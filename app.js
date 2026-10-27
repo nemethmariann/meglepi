@@ -17,11 +17,10 @@ const CONFIG = {
     "lehotaeszter13@gmail.com":     { location: "Múzeumkert",                    photo: "images/arcok/lehota.eszter.jpg" },
   },
   // a te teszteléseidhez ezekből sorsol egyet
-  locations: [
-    "Múzeumkert", "Egyetem tér", "Kálvin tér", "Károlyi-kert", "Ferenciek tere",
-    "Fővám tér",  "Bástya park",
-  ],
+  locations: ["Múzeumkert"],
   ownerPhoto: "images/arcok/nemeth.macika.jpg",
+  // a Google Táblázat Apps Script webalkalmazásának URL-je (…/exec) – üresen nem ment sehova
+  sheetUrl: "https://script.google.com/macros/s/AKfycby8VmDYI30miTW_nYBCBnmb8d5oZn5UH9gDy10LLYgMco68ZCnVVwFuYr6kRyWgh3pMJw/exec",
 };
 
 const STORAGE_KEY = "lanybucsu-v2";
@@ -230,6 +229,31 @@ function showError(msg) {
   formError.hidden = false;
 }
 
+// ---------- Mentés Google Táblázatba ----------
+// Csendben fut a háttérben: ha nem sikerül, a vendég ebből semmit nem lát.
+function saveToSheet() {
+  if (!CONFIG.sheetUrl) return;
+  const a = state.answers;
+  const row = {
+    name: a.name,
+    email: a.email,
+    address: a.address,
+    emailScore: a.emailScore,
+    funny: a.funny,
+    available: a.available,
+    serial: state.serial,
+    location: state.location,
+    test: isTestMode() ? "igen" : "",
+  };
+  fetch(CONFIG.sheetUrl, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain" },
+    body: JSON.stringify(row),
+    keepalive: true,
+  }).catch(() => {});
+}
+
 // ---------- Feltételek ----------
 const acceptPrivacy = document.getElementById("acceptPrivacy");
 const acceptJob = document.getElementById("acceptJob");
@@ -249,6 +273,7 @@ acceptBtn.addEventListener("click", () => {
     : CONFIG.locations[Math.floor(Math.random() * CONFIG.locations.length)];
   state.photo = guest ? guest.photo : CONFIG.ownerPhoto;
   state.acceptedAt = new Date().toISOString();
+  saveToSheet();
 
   if (state.answers.available === "igen") {
     show("page-ticket");
@@ -343,7 +368,9 @@ function renderTickets() {
 
   document.querySelectorAll("[data-name]").forEach((el) => (el.textContent = name));
   document.querySelectorAll("[data-ticket-date]").forEach((el) => (el.textContent = CONFIG.date));
-  document.querySelectorAll("[data-location]").forEach((el) => (el.textContent = state.location || ""));
+  // a beállításokból veszi, így a már kitöltött jegyeken is a friss helyszín látszik
+  const place = CONFIG.guests[state.answers?.email]?.location || state.location || "";
+  document.querySelectorAll("[data-location]").forEach((el) => (el.textContent = place));
   document.querySelectorAll("[data-serial]").forEach((el) => (el.textContent = "№ " + (state.serial || "")));
 
   document.querySelectorAll("[data-photo]").forEach((box) => {
