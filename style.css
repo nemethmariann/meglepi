@@ -100,7 +100,8 @@ h3 { margin: 1.4em 0 0.5em; font-size: 1.05rem; }
 }
 
 /* ---------- Kezdőoldal ---------- */
-.welcome-card { text-align: center; position: relative; z-index: 2; }
+/* felül több hely, hogy a rálógó polaroidok ne takarják a szöveget */
+.welcome-card { text-align: center; position: relative; z-index: 2; padding-top: 64px; }
 
 .polaroids {
   display: flex;
@@ -623,8 +624,8 @@ output {
   .ticket-stub { width: auto; border-left: 0; border-top: 3px dashed var(--pink-300); flex-direction: row; gap: 16px; flex-wrap: wrap; }
   .ticket.big .ticket-stub { border-top-color: var(--gold); }
   .ticket-person { flex-direction: column; text-align: center; }
-  .polaroids { gap: 4px; }
-  .polaroid { width: 22vw; padding: 5px 5px 0; }
+  .polaroids { gap: 4px; flex-wrap: nowrap; }
+  .polaroid { width: calc((100% - 12px) / 4); padding: 5px 5px 0; }
   .polaroid figcaption { padding: 3px 0 5px; font-size: 0.6rem; }
 }
 
