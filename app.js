@@ -1,6 +1,6 @@
 // ====== BEÁLLÍTÁSOK – itt lehet egyszerűen átírni ======
 const CONFIG = {
-  date: "2026. október 28.",
+  date: "2026. október 28., 17:00",
   // a te címed: ezzel mindig tovább lehet lépni, és bekapcsolja a teszt módot
   owner: "nemeth.macika@gmail.com",
   // csak ezekkel az email címekkel lehet továbblépni
@@ -243,7 +243,7 @@ acceptBtn.addEventListener("click", () => {
   const email = state.answers.email;
   const guest = CONFIG.guests[email];
   state.locked = true;
-  state.serial = state.serial || "LB-" + String(Math.floor(Math.random() * 9000) + 1000);
+  state.serial = state.serial || "JF-" + String(Math.floor(Math.random() * 9000) + 1000);
   state.location = guest
     ? guest.location
     : CONFIG.locations[Math.floor(Math.random() * CONFIG.locations.length)];
