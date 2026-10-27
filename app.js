@@ -6,20 +6,20 @@ const CONFIG = {
   // csak ezekkel az email címekkel lehet továbblépni
   // photo: az arckép helye az images/arcok/ mappában
   guests: {
-    "nagy.emma.jdc.2005@gmail.com": { location: "Bakáts tér",                          photo: "images/arcok/nagy.emma.jpg" },
-    "kovacsvivienn256@gmail.com":   { location: "Fővám tér",                           photo: "images/arcok/kovacs.vivienn.jpg" },
-    "vass.luca2006@gmail.com":      { location: "Károlyi-kert",                        photo: "images/arcok/vass.luca.jpg" },
-    "szemandorka63@gmail.com":      { location: "Egyetem tér",                         photo: "images/arcok/szeman.dorka.jpg" },
-    "aczelanna09@gmail.com":        { location: "Nehru part (a Bálna felőli oldala)",  photo: "images/arcok/aczel.anna.jpg" },
-    "hajdureka2006@gmail.com":      { location: "Kálvin tér",                          photo: "images/arcok/hajdu.reka.jpg" },
-    "lenartdora36@gmail.com":       { location: "Bástya park",                         photo: "images/arcok/lenart.dora.jpg" },
-    "konya.eszter93@gmail.com":     { location: "Ferenciek tere",                      photo: "images/arcok/konya.eszter.jpg" },
+    "nagy.emma.jdc.2005@gmail.com": { location: "Kálvin tér",                          photo: "images/arcok/nagy.emma.jpg" },
+    "kovacsvivienn256@gmail.com":   { location: "Bakáts tér",                           photo: "images/arcok/kovacs.vivienn.jpg" },
+    "vass.luca2006@gmail.com":      { location: "Egyetem tér",                        photo: "images/arcok/vass.luca.jpg" },
+    "szemandorka63@gmail.com":      { location: "Nehru part (a Bálna felőli oldala)",                         photo: "images/arcok/szeman.dorka.jpg" },
+    "aczelanna09@gmail.com":        { location: "Bástya park",  photo: "images/arcok/aczel.anna.jpg" },
+    "hajdureka2006@gmail.com":      { location: "Károlyi kert",                          photo: "images/arcok/hajdu.reka.jpg" },
+    "lenartdora36@gmail.com":       { location: "Ferenciek tere",                         photo: "images/arcok/lenart.dora.jpg" },
+    "konya.eszter93@gmail.com":     { location: "Fővám tér",                      photo: "images/arcok/konya.eszter.jpg" },
     "lehotaeszter13@gmail.com":     { location: "Múzeumkert",                          photo: "images/arcok/lehota.eszter.jpg" },
   },
   // a te teszteléseidhez ezekből sorsol egyet
   locations: [
     "Múzeumkert", "Egyetem tér", "Kálvin tér", "Károlyi-kert", "Ferenciek tere",
-    "Bakáts tér", "Fővám tér", "Nehru part (a Bálna felőli oldala)", "Bástya park",
+    "Fővám tér",  "Bástya park",
   ],
   ownerPhoto: "images/arcok/nemeth.macika.jpg",
 };
